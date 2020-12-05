@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import s from './ContactForm.module.css';
 
 class ContactForm extends Component {
@@ -15,8 +16,8 @@ class ContactForm extends Component {
   handleSubmit = e => {
     e.preventDefault();
 
-    // const isValidatedForm = this.validateForm();
-    // if (!isValidatedForm) return;
+    const isValidatedForm = this.validateForm();
+    if (!isValidatedForm) return;
     this.props.onSubmit(this.state);
 
     this.setState({
@@ -25,16 +26,16 @@ class ContactForm extends Component {
     });
   };
 
-  // validateForm = () => {
-  //   const { onCheckUnique } = this.props;
-  //   const { name, number } = this.state;
-  //   if (!name || !number) {
-  //     alert("Please write something");
-  //     return;
-  //   }
+  validateForm = () => {
+    const { onCheckUnique } = this.props;
+    const { name, number } = this.state;
+    if (!name || !number) {
+      alert('Some fields are empty! Please write something');
+      return;
+    }
 
-  //   return onCheckUnique(name);
-  // };
+    return onCheckUnique(name);
+  };
 
   render() {
     return (
@@ -58,7 +59,7 @@ class ContactForm extends Component {
               autoComplete="off"
               className={s.input}
               name="number"
-              type="text"
+              type="tel"
               value={this.state.number}
               onChange={this.handleChange}
             />
@@ -71,5 +72,10 @@ class ContactForm extends Component {
     );
   }
 }
+
+ContactForm.propTypes = {
+  onSubmit: PropTypes.func.isRequired,
+  onCheckUnique: PropTypes.func.isRequired,
+};
 
 export default ContactForm;

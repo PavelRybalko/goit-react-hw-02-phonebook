@@ -17,36 +17,36 @@ class App extends Component {
   };
 
   addContact = ({ name, number }) => {
-    if (this.findRepeatedContact(name)) {
-      alert(`${name} is already in contacts`);
-    } else {
-      const contact = {
-        id: shortid.generate(),
-        name,
-        number,
-      };
+    // if (this.findRepeatedContact(name)) {
+    //   alert(`${name} is already in contacts`);
+    // } else {
+    const contact = {
+      id: shortid.generate(),
+      name,
+      number,
+    };
 
-      this.setState(({ contacts }) => ({
-        contacts: [contact, ...contacts],
-      }));
-    }
+    this.setState(({ contacts }) => ({
+      contacts: [contact, ...contacts],
+    }));
+    // }
   };
 
-  // handleCheckUnique = (name) => {
-  //   const { contacts } = this.state;
-
-  //   const isExistContact = !!contacts.find((contact) => contact.name === name);
-  //   isExistContact && alert("Contact is already exist!");
-
-  //   return !isExistContact;
-  // };
-
-  findRepeatedContact = name => {
+  handleCheckUnique = name => {
     const { contacts } = this.state;
-    return contacts.find(el => {
-      return el.name === name;
-    });
+
+    const isExistContact = !!contacts.find(contact => contact.name === name);
+    isExistContact && alert('Contact is already exist!');
+
+    return !isExistContact;
   };
+
+  // findRepeatedContact = (name) => {
+  //   const { contacts } = this.state;
+  //   return contacts.find((el) => {
+  //     return el.name === name;
+  //   });
+  // };
 
   deleteContact = contactId => {
     this.setState(prevState => ({
@@ -73,7 +73,10 @@ class App extends Component {
 
     return (
       <Container>
-        <ContactForm onSubmit={this.addContact} />
+        <ContactForm
+          onSubmit={this.addContact}
+          onCheckUnique={this.handleCheckUnique}
+        />
         <Filter value={filter} onChange={this.changeFilter} />
         <ContactList
           contacts={visibleContacts}
